@@ -898,7 +898,7 @@ class App(BaseClass):
             options=[("percent", self.t("qmode_percent")), ("size", self.t("qmode_size"))],
             variable=self._quality_mode,
             command=self._set_quality_mode,
-            width=94)   # было 76 (по умолчанию) — не хватало места под "Размер"
+            width=115)   # было 76 (по умолчанию) — не хватало места под "Размер"
         self._qmode_toggle.pack(side="left", padx=(8, 0))
 
         _qual_wf = tk.Frame(_qual_blk, bg=BG2)
@@ -1050,9 +1050,9 @@ class App(BaseClass):
             tree.heading("name",   text=self.t("col_filename"), anchor="w")
             tree.heading("res",    text=self.t("col_res"), anchor="center")
             tree.heading("size",   text=self.t("col_size"), anchor="center")
-            tree.column("status", width=70,  minwidth=70,  stretch=False, anchor="center")
+            tree.column("status", width=90,  minwidth=70,  stretch=False, anchor="center")
             tree.column("name",   width=150, minwidth=100, stretch=True,  anchor="w")
-            tree.column("res",    width=105, minwidth=105, stretch=False, anchor="center")
+            tree.column("res",    width=135, minwidth=135, stretch=False, anchor="center")
             tree.column("size",   width=105, minwidth=105, stretch=False, anchor="center")
             def _block_status_resize(e, t=tree):
                 if t.identify_region(e.x, e.y) == "separator":
@@ -1067,7 +1067,7 @@ class App(BaseClass):
             tree.heading("res",  text=self.t("col_res"), anchor="center")
             tree.heading("size", text=self.t("col_size"), anchor="center")
             tree.column("name", width=200, minwidth=120, stretch=True,  anchor="w")
-            tree.column("res",  width=105, minwidth=105, stretch=False, anchor="center")
+            tree.column("res",  width=125, minwidth=125, stretch=False, anchor="center")
             tree.column("size", width=90,  minwidth=90,  stretch=False, anchor="center")
 
         tree.grid(row=0, column=0, sticky="nsew", padx=(6, 2), pady=6)
@@ -1683,26 +1683,11 @@ class App(BaseClass):
                     self._dz_ico.config(fg=FG3)
                 if self._dz_lbl:
                     self._dz_lbl.config(text=self.t("drop_hint"), fg=FG2)
-
-        if self._lang == "ru":
-            s = ("файл"   if n % 10 == 1 and n % 100 != 11 else
-                 "файла"  if 2 <= n % 10 <= 4 and not (11 <= n % 100 <= 14) else "файлов")
+        if self._lang == "es":
+            s = "archivo" if n == 1 else "archivos"
             self._clbl.config(text=f"{n} {s}")
-        elif self._lang == "uk":
-            s = ("файл"   if n % 10 == 1 and n % 100 != 11 else
-                 "файли"  if 2 <= n % 10 <= 4 and not (11 <= n % 100 <= 14) else "файлів")
-            self._clbl.config(text=f"{n} {s}")
-        elif self._lang == "de":
-            # В немецком всего две формы: единственное и множественное число.
-            s = "Datei" if n == 1 else "Dateien"
-            self._clbl.config(text=f"{n} {s}")
-        elif self._lang == "zh":
-            # В китайском у существительных нет грамматического числа —
-            # форма "个文件" не меняется в зависимости от количества.
-            self._clbl.config(text=f"{n} 个文件")
         else:
             self._clbl.config(text=f"{n} {'file' if n == 1 else 'files'}")
-
         if not self._running:
             self._status.set(self.t("files_count").format(n=n))
         self._lbl_size_src.config(
